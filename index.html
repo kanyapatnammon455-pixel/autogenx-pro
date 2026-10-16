@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AutoGenX PRO - AI Content Automation</title>
-    <!-- โหลด Tailwind CSS -->
+    <!-- โหลด Tailwind CSS สำหรับดีไซน์บนมือถือและ PC -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -30,75 +30,71 @@
             <h1 class="text-xl font-bold tracking-wide">
                 Auto<span class="text-brandOrange">GenX PRO</span> 🚀
             </h1>
-            <p class="text-xs text-gray-400">AI ช่วยสร้างคอนเทนต์อัตโนมัติ</p>
+            <p class="text-xs text-gray-400">ระบบ AI แปลงรูป/ลิงก์สินค้าเป็นคอนเทนต์อัตโนมัติ</p>
         </div>
         <span class="px-2.5 py-1 bg-yellow-500/10 text-brandOrange text-xs font-semibold rounded-full border border-yellow-500/20">Online</span>
     </header>
 
-    <!-- ส่วนฟอร์มสั่งงาน AI สร้างคอนเทนต์ -->
+    <!-- ส่วนฟอร์มสั่งงานหลัก -->
     <main class="w-full max-w-md mx-auto my-4 space-y-4">
         
         <div class="bg-cardBg p-4 rounded-2xl shadow-xl border border-gray-800 space-y-3">
             <h2 class="text-sm font-bold text-white flex items-center gap-2">
-                ✨ สร้างคอนเทนต์ / วิดีโออัตโนมัติ
+                ✨ สร้างสคริปต์และวิดีโออัตโนมัติ
             </h2>
 
-            <!-- เลือก AI Engine -->
+            <!-- เลือก AI Engine / สายฟรี -->
             <div>
-                <label class="block text-xs font-medium mb-1 text-gray-300">เลือก AI สมองกล</label>
+                <label class="block text-xs font-medium mb-1 text-gray-300">เลือกสมองกล AI</label>
                 <select id="aiProvider" class="w-full px-3 py-2 bg-inputBg border border-gray-700 rounded-xl text-sm text-gray-200 focus:outline-none focus:border-brandOrange">
-                    <option value="chatgpt">ChatGPT (OpenAI GPT-4o)</option>
-                    <option value="gemini">Google Gemini (Ultra/Pro)</option>
+                    <option value="free_local">Free Local Simulator (สายฟรี 100%)</option>
+                    <option value="gemini">Google Gemini (Flash/Pro)</option>
+                    <option value="chatgpt">ChatGPT (OpenAI)</option>
                     <option value="grok">Super Grok</option>
                 </select>
             </div>
 
-            <!-- เลือกประเภทคอนเทนต์ -->
+            <!-- ช่องใส่ลิงก์หรือรูปภาพสินค้า -->
             <div>
-                <label class="block text-xs font-medium mb-1 text-gray-300">รูปแบบคอนเทนต์</label>
-                <select id="contentType" class="w-full px-3 py-2 bg-inputBg border border-gray-700 rounded-xl text-sm text-gray-200 focus:outline-none focus:border-brandOrange">
-                    <option value="story">Facebook / TikTok Story</option>
-                    <option value="video">วิดีโอรีวิวสินค้า</option>
-                    <option value="podcast">Podcast / Audio Series</option>
-                    <option value="post">โพสต์ข้อความพร้อมภาพ</option>
-                </select>
-            </div>
-
-            <!-- ลิงก์สินค้าหรือข้อความตั้งต้น -->
-            <div>
-                <label class="block text-xs font-medium mb-1 text-gray-300">ลิงก์สินค้า / ข้อความ (Prompt)</label>
-                <textarea id="productInput" rows="3" placeholder="วางลิงก์ TikTok Shop / Shopee หรือพิมพ์รายละเอียดสินค้าที่นี่..." 
+                <label class="block text-xs font-medium mb-1 text-gray-300">ลิงก์สินค้า / รายละเอียด (Prompt)</label>
+                <textarea id="productInput" rows="3" placeholder="วางลิงก์ TikTok Shop / Shopee หรือพิมพ์ชื่อสินค้า เช่น ทิชชู่ห่อหนาพิเศษ..." 
                           class="w-full px-3 py-2 bg-inputBg border border-gray-700 rounded-xl text-sm text-gray-200 focus:outline-none focus:border-brandOrange placeholder-gray-500"></textarea>
             </div>
 
-            <!-- แพลตฟอร์มปลายทาง -->
+            <!-- แพลตฟอร์มเป้าหมาย -->
             <div>
-                <label class="block text-xs font-medium mb-1 text-gray-300">เผยแพลตฟอร์มเป้าหมาย</label>
+                <label class="block text-xs font-medium mb-1 text-gray-300">แพลตฟอร์มปลายทาง</label>
                 <div class="grid grid-cols-3 gap-2 text-xs">
                     <label class="flex items-center gap-1.5 p-2 bg-inputBg border border-gray-700 rounded-lg cursor-pointer">
-                        <input type="checkbox" id="chkTikTok" checked class="accent-amber-500"> TikTok
+                        <input type="checkbox" name="platforms" value="TikTok" checked class="accent-amber-500"> TikTok
                     </label>
                     <label class="flex items-center gap-1.5 p-2 bg-inputBg border border-gray-700 rounded-lg cursor-pointer">
-                        <input type="checkbox" id="chkShopee" checked class="accent-amber-500"> Shopee
+                        <input type="checkbox" name="platforms" value="Shopee" checked class="accent-amber-500"> Shopee
                     </label>
                     <label class="flex items-center gap-1.5 p-2 bg-inputBg border border-gray-700 rounded-lg cursor-pointer">
-                        <input type="checkbox" id="chkFacebook" checked class="accent-amber-500"> Facebook
+                        <input type="checkbox" name="platforms" value="Facebook" checked class="accent-amber-500"> Facebook
+                    </label>
+                    <label class="flex items-center gap-1.5 p-2 bg-inputBg border border-gray-700 rounded-lg cursor-pointer">
+                        <input type="checkbox" name="platforms" value="Instagram" checked class="accent-amber-500"> Instagram
+                    </label>
+                    <label class="flex items-center gap-1.5 p-2 bg-inputBg border border-gray-700 rounded-lg cursor-pointer">
+                        <input type="checkbox" name="platforms" value="YouTube" checked class="accent-amber-500"> YouTube
                     </label>
                 </div>
             </div>
 
             <!-- ปุ่มสั่งทำงาน -->
-            <button onclick="runAutoGen()" class="w-full mt-2 bg-brandOrange hover:bg-yellow-600 text-black font-bold py-2.5 rounded-xl text-sm transition duration-200 shadow-md">
-                🚀 เริ่มสร้างและโพสต์อัตโนมัติ
+            <button onclick="runAutoGenPro()" class="w-full mt-2 bg-brandOrange hover:bg-yellow-600 text-black font-bold py-2.5 rounded-xl text-sm transition duration-200 shadow-md">
+                🚀 เริ่มสร้างสคริปต์และแคปชันอัตโนมัติ
             </button>
         </div>
 
-        <!-- กล่องแสดงสถานะการทำงาน -->
+        <!-- กล่องแสดงสถานะและผลลัพธ์ (Logs) -->
         <div class="bg-cardBg p-4 rounded-2xl shadow-xl border border-gray-800">
-            <h3 class="text-xs font-bold text-gray-400 mb-2">สถานะการทำงาน (Logs)</h3>
-            <div id="logOutput" class="bg-black/40 p-3 rounded-xl text-xs font-mono text-green-400 h-28 overflow-y-auto">
-                > ระบบ AutoGenX พร้อมใช้งาน...<br>
-                > รอรับคำสั่งจากคุณนายสายอีสาน
+            <h3 class="text-xs font-bold text-gray-400 mb-2">ผลลัพธ์การทำงาน (Content Package Logs)</h3>
+            <div id="logOutput" class="bg-black/40 p-3 rounded-xl text-xs font-mono text-green-400 h-48 overflow-y-auto whitespace-pre-line">
+> ระบบ AutoGenX PRO พร้อมใช้งาน...
+> รอรับข้อมูลสินค้าจากคุณนายสายอีสาน
             </div>
         </div>
 
@@ -106,26 +102,42 @@
 
     <!-- ส่วนท้าย -->
     <footer class="text-center text-xs text-gray-500 py-2">
-        AutoGenX PRO &copy; 2026 - Private Mobile & PC System
+        AutoGenX PRO &copy; 2026 - Mobile AI Content Automation
     </footer>
 
+    <!-- จาวาสคริปต์จำลองการทำงานฝั่งหน้าเว็บ -->
     <script>
-        function runAutoGen() {
+        function runAutoGenPro() {
             const ai = document.getElementById('aiProvider').value;
-            const type = document.getElementById('contentType').value;
-            const input = document.getElementById('productInput').value;
+            const input = document.getElementById('productInput').value.trim();
             const logBox = document.getElementById('logOutput');
 
-            if(!input.trim()) {
-                alert('กรุณากรอกลิงก์สินค้าหรือข้อความก่อนค่ะ!');
+            if(!input) {
+                alert('กรุณากรอกลิงก์หรือรายละเอียดสินค้าก่อนค่ะ!');
                 return;
             }
 
-            logBox.innerHTML += `<br>> [AI: ${ai.toUpperCase pipa}] กำลังประมวลผลคอนเทนต์ [${type}]...`;
+            // รวบรวมแพลตฟอร์มที่เลือก
+            const selectedPlatforms = Array.from(document.querySelectorAll('input[name="platforms"]:checked')).map(el => el.value);
+
+            logBox.innerHTML = `> กำลังประมวลผลด้วย [${ai.toUpperCase()}]...\n> สินค้า: ${input}\n> แพลตฟอร์ม: ${selectedPlatforms.join(', ')}\n`;
+
             setTimeout(() => {
-                logBox.innerHTML += `<br>> ✅ สร้างสคริปต์ 4 ขั้นตอนและแคปชันสำเร็จ!`;
+                let resultText = `\n✅ สร้างแพ็กเกจสำเร็จ!\n\n`;
+                resultText += `🎬 [สคริปต์วิดีโอ 4 ขั้นตอน]\n`;
+                resultText += `1. Hero: เปิดตัวดึงดูดสายตาสำหรับ "${input}"\n`;
+                resultText += `2. Detail: เจาะลึกจุดเด่นความคุ้มค่า\n`;
+                resultText += `3. Usage: สาธิตการใช้งานจริง\n`;
+                resultText += `4. Final Shot: พิกัดตะกร้าเหลือง รีบด่วน!\n\n`;
+                
+                resultText += `📝 [แคปชันพร้อมโพสต์]\n`;
+                selectedPlatforms.forEach(p => {
+                    resultText += `- [${p}]: ป้ายยาแรงมาก! ${input} พิกัดในตะกร้าเลยจ้า 🛒 #${p} #คุณนายสายอีสาน\n`;
+                });
+
+                logBox.innerHTML += resultText;
                 logBox.scrollTop = logBox.scrollHeight;
-            }, 1500);
+            }, 1200);
         }
     </script>
 </body>
