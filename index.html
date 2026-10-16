@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AutoGenX PRO - AI Content Automation</title>
-    <!-- โหลด Tailwind CSS สำหรับแต่งหน้าจอ UI Dark Mode -->
+    <!-- โหลด Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -24,7 +24,7 @@
 </head>
 <body class="bg-darkBg text-gray-200 min-h-screen p-4 flex flex-col justify-between">
 
-    <!-- ส่วนหัวโปรแกรม (Header) -->
+    <!-- ส่วนหัวโปรแกรม -->
     <header class="w-full max-w-md mx-auto py-3 border-b border-gray-800 flex justify-between items-center">
         <div>
             <h1 class="text-xl font-bold tracking-wide">
@@ -35,7 +35,7 @@
         <span class="px-2.5 py-1 bg-yellow-500/10 text-brandOrange text-xs font-semibold rounded-full border border-yellow-500/20">Online</span>
     </header>
 
-    <!-- ส่วนฟอร์มสั่งงาน AI (Main Form) -->
+    <!-- ส่วนฟอร์มสั่งงาน AI สร้างคอนเทนต์ -->
     <main class="w-full max-w-md mx-auto my-4 space-y-4">
         
         <div class="bg-cardBg p-4 rounded-2xl shadow-xl border border-gray-800 space-y-3">
@@ -43,7 +43,17 @@
                 ✨ สร้างคอนเทนต์ / วิดีโออัตโนมัติ
             </h2>
 
-            <!-- ตัวเลือกรูปแบบคอนเทนต์ -->
+            <!-- เลือก AI Engine -->
+            <div>
+                <label class="block text-xs font-medium mb-1 text-gray-300">เลือก AI สมองกล</label>
+                <select id="aiProvider" class="w-full px-3 py-2 bg-inputBg border border-gray-700 rounded-xl text-sm text-gray-200 focus:outline-none focus:border-brandOrange">
+                    <option value="chatgpt">ChatGPT (OpenAI GPT-4o)</option>
+                    <option value="gemini">Google Gemini (Ultra/Pro)</option>
+                    <option value="grok">Super Grok</option>
+                </select>
+            </div>
+
+            <!-- เลือกประเภทคอนเทนต์ -->
             <div>
                 <label class="block text-xs font-medium mb-1 text-gray-300">รูปแบบคอนเทนต์</label>
                 <select id="contentType" class="w-full px-3 py-2 bg-inputBg border border-gray-700 rounded-xl text-sm text-gray-200 focus:outline-none focus:border-brandOrange">
@@ -54,25 +64,25 @@
                 </select>
             </div>
 
-            <!-- ลิงก์สินค้าหรือ Prompt -->
+            <!-- ลิงก์สินค้าหรือข้อความตั้งต้น -->
             <div>
                 <label class="block text-xs font-medium mb-1 text-gray-300">ลิงก์สินค้า / ข้อความ (Prompt)</label>
                 <textarea id="productInput" rows="3" placeholder="วางลิงก์ TikTok Shop / Shopee หรือพิมพ์รายละเอียดสินค้าที่นี่..." 
                           class="w-full px-3 py-2 bg-inputBg border border-gray-700 rounded-xl text-sm text-gray-200 focus:outline-none focus:border-brandOrange placeholder-gray-500"></textarea>
             </div>
 
-            <!-- ตัวเลือกแพลตฟอร์มเป้าหมาย -->
+            <!-- แพลตฟอร์มปลายทาง -->
             <div>
-                <label class="block text-xs font-medium mb-1 text-gray-300">แพลตฟอร์มเป้าหมาย</label>
+                <label class="block text-xs font-medium mb-1 text-gray-300">เผยแพลตฟอร์มเป้าหมาย</label>
                 <div class="grid grid-cols-3 gap-2 text-xs">
                     <label class="flex items-center gap-1.5 p-2 bg-inputBg border border-gray-700 rounded-lg cursor-pointer">
-                        <input type="checkbox" checked class="accent-amber-500"> TikTok
+                        <input type="checkbox" id="chkTikTok" checked class="accent-amber-500"> TikTok
                     </label>
                     <label class="flex items-center gap-1.5 p-2 bg-inputBg border border-gray-700 rounded-lg cursor-pointer">
-                        <input type="checkbox" checked class="accent-amber-500"> Shopee
+                        <input type="checkbox" id="chkShopee" checked class="accent-amber-500"> Shopee
                     </label>
                     <label class="flex items-center gap-1.5 p-2 bg-inputBg border border-gray-700 rounded-lg cursor-pointer">
-                        <input type="checkbox" checked class="accent-amber-500"> Facebook
+                        <input type="checkbox" id="chkFacebook" checked class="accent-amber-500"> Facebook
                     </label>
                 </div>
             </div>
@@ -83,37 +93,37 @@
             </button>
         </div>
 
-        <!-- กล่องแสดง Logs สถานะการทำงาน -->
+        <!-- กล่องแสดงสถานะการทำงาน -->
         <div class="bg-cardBg p-4 rounded-2xl shadow-xl border border-gray-800">
             <h3 class="text-xs font-bold text-gray-400 mb-2">สถานะการทำงาน (Logs)</h3>
-            <div id="logOutput" class="bg-black/40 p-3 rounded-xl text-xs font-mono text-green-400 h-24 overflow-y-auto">
+            <div id="logOutput" class="bg-black/40 p-3 rounded-xl text-xs font-mono text-green-400 h-28 overflow-y-auto">
                 > ระบบ AutoGenX พร้อมใช้งาน...<br>
-                > รอรับคำสั่ง
+                > รอรับคำสั่งจากคุณนายสายอีสาน
             </div>
         </div>
 
     </main>
 
-    <!-- ส่วนท้าย (Footer) -->
+    <!-- ส่วนท้าย -->
     <footer class="text-center text-xs text-gray-500 py-2">
         AutoGenX PRO &copy; 2026 - Private Mobile & PC System
     </footer>
 
-    <!-- ส่วนทำงานสคริปต์ (JavaScript) -->
     <script>
         function runAutoGen() {
+            const ai = document.getElementById('aiProvider').value;
             const type = document.getElementById('contentType').value;
             const input = document.getElementById('productInput').value;
             const logBox = document.getElementById('logOutput');
 
             if(!input.trim()) {
-                alert('กรุณากรอกลิงก์สินค้าหรือข้อความก่อนครับ!');
+                alert('กรุณากรอกลิงก์สินค้าหรือข้อความก่อนค่ะ!');
                 return;
             }
 
-            logBox.innerHTML += `<br>> กำลังประมวลผลสร้างคอนเทนต์ [${type}]...`;
+            logBox.innerHTML += `<br>> [AI: ${ai.toUpperCase pipa}] กำลังประมวลผลคอนเทนต์ [${type}]...`;
             setTimeout(() => {
-                logBox.innerHTML += `<br>> ✅ สร้างและส่งออกสำเร็จ พร้อมโพสต์ลงโซเชียล!`;
+                logBox.innerHTML += `<br>> ✅ สร้างสคริปต์ 4 ขั้นตอนและแคปชันสำเร็จ!`;
                 logBox.scrollTop = logBox.scrollHeight;
             }, 1500);
         }
