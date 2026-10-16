@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="th" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutoGenX PRO - AI Content Automation</title>
+    <!-- โหลด Tailwind CSS สำหรับแต่งหน้าจอ UI Dark Mode -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        darkBg: '#121619',
+                        cardBg: '#1a1f24',
+                        inputBg: '#121619',
+                        brandOrange: '#f59e0b'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-darkBg text-gray-200 min-h-screen p-4 flex flex-col justify-between">
+
+    <!-- ส่วนหัวโปรแกรม (Header) -->
+    <header class="w-full max-w-md mx-auto py-3 border-b border-gray-800 flex justify-between items-center">
+        <div>
+            <h1 class="text-xl font-bold tracking-wide">
+                Auto<span class="text-brandOrange">GenX PRO</span> 🚀
+            </h1>
+            <p class="text-xs text-gray-400">AI ช่วยสร้างคอนเทนต์อัตโนมัติ</p>
+        </div>
+        <span class="px-2.5 py-1 bg-yellow-500/10 text-brandOrange text-xs font-semibold rounded-full border border-yellow-500/20">Online</span>
+    </header>
+
+    <!-- ส่วนฟอร์มสั่งงาน AI (Main Form) -->
+    <main class="w-full max-w-md mx-auto my-4 space-y-4">
+        
+        <div class="bg-cardBg p-4 rounded-2xl shadow-xl border border-gray-800 space-y-3">
+            <h2 class="text-sm font-bold text-white flex items-center gap-2">
+                ✨ สร้างคอนเทนต์ / วิดีโออัตโนมัติ
+            </h2>
+
+            <!-- ตัวเลือกรูปแบบคอนเทนต์ -->
+            <div>
+                <label class="block text-xs font-medium mb-1 text-gray-300">รูปแบบคอนเทนต์</label>
+                <select id="contentType" class="w-full px-3 py-2 bg-inputBg border border-gray-700 rounded-xl text-sm text-gray-200 focus:outline-none focus:border-brandOrange">
+                    <option value="story">Facebook / TikTok Story</option>
+                    <option value="video">วิดีโอรีวิวสินค้า</option>
+                    <option value="podcast">Podcast / Audio Series</option>
+                    <option value="post">โพสต์ข้อความพร้อมภาพ</option>
+                </select>
+            </div>
+
+            <!-- ลิงก์สินค้าหรือ Prompt -->
+            <div>
+                <label class="block text-xs font-medium mb-1 text-gray-300">ลิงก์สินค้า / ข้อความ (Prompt)</label>
+                <textarea id="productInput" rows="3" placeholder="วางลิงก์ TikTok Shop / Shopee หรือพิมพ์รายละเอียดสินค้าที่นี่..." 
+                          class="w-full px-3 py-2 bg-inputBg border border-gray-700 rounded-xl text-sm text-gray-200 focus:outline-none focus:border-brandOrange placeholder-gray-500"></textarea>
+            </div>
+
+            <!-- ตัวเลือกแพลตฟอร์มเป้าหมาย -->
+            <div>
+                <label class="block text-xs font-medium mb-1 text-gray-300">แพลตฟอร์มเป้าหมาย</label>
+                <div class="grid grid-cols-3 gap-2 text-xs">
+                    <label class="flex items-center gap-1.5 p-2 bg-inputBg border border-gray-700 rounded-lg cursor-pointer">
+                        <input type="checkbox" checked class="accent-amber-500"> TikTok
+                    </label>
+                    <label class="flex items-center gap-1.5 p-2 bg-inputBg border border-gray-700 rounded-lg cursor-pointer">
+                        <input type="checkbox" checked class="accent-amber-500"> Shopee
+                    </label>
+                    <label class="flex items-center gap-1.5 p-2 bg-inputBg border border-gray-700 rounded-lg cursor-pointer">
+                        <input type="checkbox" checked class="accent-amber-500"> Facebook
+                    </label>
+                </div>
+            </div>
+
+            <!-- ปุ่มสั่งทำงาน -->
+            <button onclick="runAutoGen()" class="w-full mt-2 bg-brandOrange hover:bg-yellow-600 text-black font-bold py-2.5 rounded-xl text-sm transition duration-200 shadow-md">
+                🚀 เริ่มสร้างและโพสต์อัตโนมัติ
+            </button>
+        </div>
+
+        <!-- กล่องแสดง Logs สถานะการทำงาน -->
+        <div class="bg-cardBg p-4 rounded-2xl shadow-xl border border-gray-800">
+            <h3 class="text-xs font-bold text-gray-400 mb-2">สถานะการทำงาน (Logs)</h3>
+            <div id="logOutput" class="bg-black/40 p-3 rounded-xl text-xs font-mono text-green-400 h-24 overflow-y-auto">
+                > ระบบ AutoGenX พร้อมใช้งาน...<br>
+                > รอรับคำสั่ง
+            </div>
+        </div>
+
+    </main>
+
+    <!-- ส่วนท้าย (Footer) -->
+    <footer class="text-center text-xs text-gray-500 py-2">
+        AutoGenX PRO &copy; 2026 - Private Mobile & PC System
+    </footer>
+
+    <!-- ส่วนทำงานสคริปต์ (JavaScript) -->
+    <script>
+        function runAutoGen() {
+            const type = document.getElementById('contentType').value;
+            const input = document.getElementById('productInput').value;
+            const logBox = document.getElementById('logOutput');
+
+            if(!input.trim()) {
+                alert('กรุณากรอกลิงก์สินค้าหรือข้อความก่อนครับ!');
+                return;
+            }
+
+            logBox.innerHTML += `<br>> กำลังประมวลผลสร้างคอนเทนต์ [${type}]...`;
+            setTimeout(() => {
+                logBox.innerHTML += `<br>> ✅ สร้างและส่งออกสำเร็จ พร้อมโพสต์ลงโซเชียล!`;
+                logBox.scrollTop = logBox.scrollHeight;
+            }, 1500);
+        }
+    </script>
+</body>
+</html>
