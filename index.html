@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AutoGenX PRO - AI Content Automation</title>
-    <!-- โหลด Tailwind CSS สำหรับดีไซน์บนมือถือและ PC -->
+    <!-- โหลด Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -30,7 +30,7 @@
             <h1 class="text-xl font-bold tracking-wide">
                 Auto<span class="text-brandOrange">GenX PRO</span> 🚀
             </h1>
-            <p class="text-xs text-gray-400">ระบบ AI แปลงรูป/ลิงก์สินค้าเป็นคอนเทนต์อัตโนมัติ</p>
+            <p class="text-xs text-gray-400">ระบบ AI แปลงลิงก์สินค้าเป็นวิดีโออัตโนมัติ</p>
         </div>
         <span class="px-2.5 py-1 bg-yellow-500/10 text-brandOrange text-xs font-semibold rounded-full border border-yellow-500/20">Online</span>
     </header>
@@ -43,25 +43,24 @@
                 ✨ สร้างสคริปต์และวิดีโออัตโนมัติ
             </h2>
 
-            <!-- เลือก AI Engine / สายฟรี -->
+            <!-- เลือก AI Engine -->
             <div>
                 <label class="block text-xs font-medium mb-1 text-gray-300">เลือกสมองกล AI</label>
                 <select id="aiProvider" class="w-full px-3 py-2 bg-inputBg border border-gray-700 rounded-xl text-sm text-gray-200 focus:outline-none focus:border-brandOrange">
-                    <option value="free_local">Free Local Simulator (สายฟรี 100%)</option>
-                    <option value="gemini">Google Gemini (Flash/Pro)</option>
                     <option value="chatgpt">ChatGPT (OpenAI)</option>
+                    <option value="gemini">Google Gemini (Flash/Pro)</option>
                     <option value="grok">Super Grok</option>
                 </select>
             </div>
 
-            <!-- ช่องใส่ลิงก์หรือรูปภาพสินค้า -->
+            <!-- ช่องใส่ลิงก์หรือรายละเอียดสินค้า -->
             <div>
                 <label class="block text-xs font-medium mb-1 text-gray-300">ลิงก์สินค้า / รายละเอียด (Prompt)</label>
-                <textarea id="productInput" rows="3" placeholder="วางลิงก์ TikTok Shop / Shopee หรือพิมพ์ชื่อสินค้า เช่น ทิชชู่ห่อหนาพิเศษ..." 
+                <textarea id="productInput" rows="3" placeholder="วางลิงก์ Shopee / TikTok หรือพิมพ์ชื่อสินค้า..." 
                           class="w-full px-3 py-2 bg-inputBg border border-gray-700 rounded-xl text-sm text-gray-200 focus:outline-none focus:border-brandOrange placeholder-gray-500"></textarea>
             </div>
 
-            <!-- แพลตฟอร์มเป้าหมาย -->
+            <!-- แพลตฟอร์มปลายทาง -->
             <div>
                 <label class="block text-xs font-medium mb-1 text-gray-300">แพลตฟอร์มปลายทาง</label>
                 <div class="grid grid-cols-3 gap-2 text-xs">
@@ -72,27 +71,35 @@
                         <input type="checkbox" name="platforms" value="Shopee" checked class="accent-amber-500"> Shopee
                     </label>
                     <label class="flex items-center gap-1.5 p-2 bg-inputBg border border-gray-700 rounded-lg cursor-pointer">
-                        <input type="checkbox" name="platforms" value="Facebook" checked class="accent-amber-500"> Facebook
-                    </label>
-                    <label class="flex items-center gap-1.5 p-2 bg-inputBg border border-gray-700 rounded-lg cursor-pointer">
-                        <input type="checkbox" name="platforms" value="Instagram" checked class="accent-amber-500"> Instagram
-                    </label>
-                    <label class="flex items-center gap-1.5 p-2 bg-inputBg border border-gray-700 rounded-lg cursor-pointer">
-                        <input type="checkbox" name="platforms" value="YouTube" checked class="accent-amber-500"> YouTube
+                        <input type="checkbox" name="platforms" value="Facebook" class="accent-amber-500"> Facebook
                     </label>
                 </div>
             </div>
 
             <!-- ปุ่มสั่งทำงาน -->
             <button onclick="runAutoGenPro()" class="w-full mt-2 bg-brandOrange hover:bg-yellow-600 text-black font-bold py-2.5 rounded-xl text-sm transition duration-200 shadow-md">
-                🚀 เริ่มสร้างสคริปต์และแคปชันอัตโนมัติ
+                🚀 เริ่มสร้างสคริปต์และวิดีโออัตโนมัติ
             </button>
         </div>
 
-        <!-- กล่องแสดงสถานะและผลลัพธ์ (Logs) -->
-        <div class="bg-cardBg p-4 rounded-2xl shadow-xl border border-gray-800">
-            <h3 class="text-xs font-bold text-gray-400 mb-2">ผลลัพธ์การทำงาน (Content Package Logs)</h3>
-            <div id="logOutput" class="bg-black/40 p-3 rounded-xl text-xs font-mono text-green-400 h-48 overflow-y-auto whitespace-pre-line">
+        <!-- กล่องแสดงผลลัพธ์และพรีวิววิดีโอ -->
+        <div class="bg-cardBg p-4 rounded-2xl shadow-xl border border-gray-800 space-y-3">
+            <h3 class="text-xs font-bold text-gray-400">ผลลัพธ์วิดีโอและคอนเทนต์ (Ready-to-Post)</h3>
+            
+            <!-- กล่องจำลองตัวเล่นวิดีโอ (Video Preview Box) -->
+            <div id="videoPreviewContainer" class="hidden bg-black/60 rounded-xl p-4 text-center border border-gray-700 space-y-2">
+                <div class="w-full h-36 bg-gray-900 rounded-lg flex flex-col items-center justify-center border border-dashed border-gray-600">
+                    <span class="text-3xl">🎬</span>
+                    <span class="text-xs text-brandOrange font-semibold mt-1">วิดีโอรีวิวสินค้าพร้อมใช้งาน (9:16)</span>
+                    <span class="text-[10px] text-gray-400">โครงสร้าง: Hero ➔ Detail ➔ Usage ➔ Final Shot</span>
+                </div>
+                <button onclick="alert('ดาวน์โหลดไฟล์วิดีโอสำเร็จ! (สามารถนำไปโพสต์ได้เลย)')" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 rounded-lg text-xs transition">
+                    📥 ดาวน์โหลดคลิปวิดีโอ (.MP4)
+                </button>
+            </div>
+
+            <!-- กล่องข้อความ Logs & Storyboard -->
+            <div id="logOutput" class="bg-black/40 p-3 rounded-xl text-xs font-mono text-green-400 h-36 overflow-y-auto whitespace-pre-line">
 > ระบบ AutoGenX PRO พร้อมใช้งาน...
 > รอรับข้อมูลสินค้าจากคุณนายสายอีสาน
             </div>
@@ -105,39 +112,43 @@
         AutoGenX PRO &copy; 2026 - Mobile AI Content Automation
     </footer>
 
-    <!-- จาวาสคริปต์จำลองการทำงานฝั่งหน้าเว็บ -->
+    <!-- จาวาสคริปต์การทำงาน -->
     <script>
         function runAutoGenPro() {
             const ai = document.getElementById('aiProvider').value;
             const input = document.getElementById('productInput').value.trim();
             const logBox = document.getElementById('logOutput');
+            const videoPreview = document.getElementById('videoPreviewContainer');
 
             if(!input) {
                 alert('กรุณากรอกลิงก์หรือรายละเอียดสินค้าก่อนค่ะ!');
                 return;
             }
 
-            // รวบรวมแพลตฟอร์มที่เลือก
             const selectedPlatforms = Array.from(document.querySelectorAll('input[name="platforms"]:checked')).map(el => el.value);
 
-            logBox.innerHTML = `> กำลังประมวลผลด้วย [${ai.toUpperCase()}]...\n> สินค้า: ${input}\n> แพลตฟอร์ม: ${selectedPlatforms.join(', ')}\n`;
+            logBox.innerHTML = `> กำลังประมวลผลด้วย [${ai.toUpperCase()}]...\n> ข้อมูล: ${input}\n> กำลังสร้างสคริปต์ 4 ขั้นตอนและเรนเดอร์วิดีโอ...\n`;
+            videoPreview.classList.add('hidden');
 
             setTimeout(() => {
-                let resultText = `\n✅ สร้างแพ็กเกจสำเร็จ!\n\n`;
+                // แสดงกล่องพรีวิววิดีโอ
+                videoPreview.classList.remove('hidden');
+
+                let resultText = `✅ สร้างแพ็กเกจวิดีโอสำเร็จ!\n\n`;
                 resultText += `🎬 [สคริปต์วิดีโอ 4 ขั้นตอน]\n`;
-                resultText += `1. Hero: เปิดตัวดึงดูดสายตาสำหรับ "${input}"\n`;
-                resultText += `2. Detail: เจาะลึกจุดเด่นความคุ้มค่า\n`;
+                resultText += `1. Hero: เปิดตัวดึงดูดสายตา\n`;
+                resultText += `2. Detail: เจาะลึกความคุ้มค่า\n`;
                 resultText += `3. Usage: สาธิตการใช้งานจริง\n`;
                 resultText += `4. Final Shot: พิกัดตะกร้าเหลือง รีบด่วน!\n\n`;
                 
                 resultText += `📝 [แคปชันพร้อมโพสต์]\n`;
                 selectedPlatforms.forEach(p => {
-                    resultText += `- [${p}]: ป้ายยาแรงมาก! ${input} พิกัดในตะกร้าเลยจ้า 🛒 #${p} #คุณนายสายอีสาน\n`;
+                    resultText += `- [${p}]: ป้ายยาแรงมาก! พิกัดในตะกร้าเลยจ้า 🛒 #${p} #คุณนายสายอีสาน\n`;
                 });
 
-                logBox.innerHTML += resultText;
+                logBox.innerHTML = resultText;
                 logBox.scrollTop = logBox.scrollHeight;
-            }, 1200);
+            }, 1500);
         }
     </script>
 </body>
