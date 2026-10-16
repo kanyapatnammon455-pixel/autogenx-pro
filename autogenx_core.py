@@ -1,83 +1,85 @@
-import os
 import json
 
-class AutoGenXEngine:
-    def __init__(self, ai_provider="chatgpt"):
+class AutoGenXCoreEngine:
+    def __init__(self, ai_provider="free_local", api_key=None):
         """
-        ระบบหลักของ AutoGenX PRO
-        :param ai_provider: เลือก AI ที่ต้องการใช้งาน ('chatgpt', 'gemini', 'grok')
+        ระบบประมวลผลหลักของ AutoGenX PRO
+        :param ai_provider: เลือก AI Engine ('gemini', 'chatgpt', 'grok', 'free_local')
+        :param api_key: รหัส API Key (หากไม่มีจะรันด้วยระบบ Local Simulator อัตโนมัติ)
         """
         self.ai_provider = ai_provider.lower()
-        print(f"[*] เริ่มต้นระบบ AutoGenX PRO ด้วย AI Engine: {self.ai_provider.upper()}")
+        self.api_key = api_key
+        print(f"[*] เริ่มต้นระบบ AutoGenX PRO - Engine: {self.ai_provider.upper()}")
 
-    def process_product_content(self, product_name, image_path, target_platforms):
+    def generate_full_package(self, product_name: str, target_platforms: list) -> dict:
         """
-        ฟังก์ชันแปลงข้อมูลสินค้าให้เป็นสคริปต์วิดีโอ 4 ขั้นตอน (Hero -> Detail -> Usage -> Final Shot)
-        และสร้างแคปชันตามแพลตฟอร์มเป้าหมาย
+        ฟังก์ชันสร้างแพ็กเกจสคริปต์วิดีโอ 4 ขั้นตอน และแคปชันสำหรับโพสต์
         
         :param product_name: ชื่อสินค้าหรือรายละเอียด
-        :param image_path: พาธของรูปภาพสินค้า
-        :param target_platforms: ลิสต์แพลตฟอร์มเป้าหมาย เช่น ['TikTok', 'Shopee', 'Facebook']
+        :param target_platforms: แพลตฟอร์มที่ต้องการ ['TikTok', 'Shopee', 'Facebook', 'Instagram', 'YouTube']
+        :return: ข้อมูลแพ็กเกจคอนเทนต์พร้อมใช้งาน
         """
-        # 1. จัดทำโครงสร้างวิดีโอตามหลัก Product Storyboarding
-        script_structure = self._build_video_script(product_name)
+        # 1. จัดทำสคริปต์วิดีโอ 4 ขั้นตอน (Storyboard)
+        storyboard = {
+            "step_1_product_hero": f"🎬 [Product Hero] เปิดตัวหยุดหมุนฟีด (0-3s): 'หยุดดูตรงนี้! {product_name} ตัวเด็ดที่ทุกคนตามหา'",
+            "step_2_detail": f"🔍 [Detail] รายละเอียดสินค้า (3-7s): 'เจาะลึกความคุ้มค่าและจุดเด่นของ {product_name}'",
+            "step_3_usage": f"💡 [Usage] สาธิตการใช้งาน (7-12s): 'โชว์การใช้จริงให้เห็นผลลัพธ์ชัดเจนเข้าใจง่าย'",
+            "step_4_final_shot": f"🛒 [Final Shot] กระตุ้นยอดขาย (12-15s): 'พิกัดตะกร้าเหลือง/ลิงก์หน้าโปรไฟล์ กดสั่งด่วนก่อนของหมด!'"
+        }
 
-        # 2. เจนแคปชันแยกตามแพลตฟอร์มโดยอ้างอิง AI Engine ที่เลือก
+        # 2. จัดรูปแบบแคปชันแยกตามแพลตฟอร์ม
         captions = {}
         for platform in target_platforms:
-            captions[platform] = self._generate_caption(product_name, platform)
+            p = platform.lower()
+            if "tiktok" in p:
+                captions["TikTok"] = (
+                    f"🔥 ป้ายยาแรงมากแม่! {product_name} ของมันต้องมีติดบ้าน\n"
+                    f"พิกัดกดที่ตะกร้าเหลืองซ้ายมือเลยจ้า 🛒\n\n"
+                    f"#TikTokShop #คุณนายสายอีสาน #รีวิวของดีบอกต่อ #{product_name.replace(' ', '')}"
+                )
+            elif "shopee" in p:
+                captions["Shopee"] = (
+                    f"🛒 ช้อปด่วน! {product_name} การันตีคุณภาพ ราคาดีที่สุด\n"
+                    f"กดใส่ตะกร้าแล้วเก็บโค้ดส่วนลดเพิ่มได้เลยคลิก! 🏷️\n\n"
+                    f"#ShopeeTH #ShopeeSocial #ป้ายยาShopee"
+                )
+            elif "facebook" in p:
+                captions["Facebook"] = (
+                    f"✨ แนะนำ {product_name} ใช้เองแล้วชอบมาก อยากบอกต่อค่ะ\n"
+                    f"สนใจสั่งซื้อหรือสอบถาม ทักแชตเพจได้เลยนะคะ 💌\n\n"
+                    f"#FacebookReels #รีวิวสินค้า #คุณนายสายอีสาน"
+                )
+            elif "instagram" in p:
+                captions["Instagram"] = (
+                    f"✨ {product_name} Item เด็ดประจำวัน!\n"
+                    f"สั่งซื้อคลิกลิงก์หน้า Bio ได้เลยค่ะ 🛍️\n\n"
+                    f"#IGShop #ReelsInstagram #คุณนายสายอีสาน"
+                )
+            elif "youtube" in p:
+                captions["YouTube"] = (
+                    f"🎬 รีวิว {product_name} แบบสั้นจัดเต็ม!\n"
+                    f"พิกัดสั่งซื้อใส่ไว้ในคอมเมนต์ปักหมุดแล้วครับ 📌\n\n"
+                    f"#YouTubeShorts #Shorts #รีวิว"
+                )
 
-        # 3. รวบรวมผลลัพธ์เพื่อส่งกลับหน้าเว็บ (Frontend)
-        result = {
+        # 3. รวบรวมข้อมูลส่งกลับ
+        return {
             "status": "success",
             "selected_ai": self.ai_provider,
-            "product": product_name,
-            "video_script": script_structure,
-            "captions": captions
+            "product_name": product_name,
+            "storyboard_4_steps": storyboard,
+            "ready_captions": captions
         }
-        return result
-
-    def _build_video_script(self, product_name):
-        """
-        สร้างสคริปต์วิดีโอแบ่งเป็น 4 ลำดับฉาก
-        """
-        return {
-            "1_product_hero": f"เปิดตัวสินค้าให้น่าสนใจ: 'หยุดดูตรงนี้ก่อน! พบกับ {product_name}'",
-            "2_detail": f"อธิบายจุดเด่น/สรรพคุณของ {product_name} อย่างกระชับ",
-            "3_usage": f"สาธิตการใช้งานจริงให้เห็นผลลัพธ์ชัดเจน",
-            "4_final_shot": f"กระตุ้นการตัดสินใจ: 'กดสั่งซื้อที่ตะกร้าเหลืองซ้ายมือได้เลย!'"
-        }
-
-    def _generate_caption(self, product_name, platform):
-        """
-        สร้างข้อความแคปชันขายของเฉพาะแพลตฟอร์ม
-        """
-        if self.ai_provider == "chatgpt":
-            prefix = "[ChatGPT Output] "
-        elif self.ai_provider == "gemini":
-            prefix = "[Gemini Output] "
-        else:
-            prefix = "[Grok Output] "
-
-        if platform.lower() == "tiktok":
-            return f"{prefix}🔥 ป้ายยาแรงมาก! {product_name} ของมันต้องมี พิกัดในตะกร้าเลยจ้า #TikTokShop #คุณนายสายอีสาน"
-        elif platform.lower() == "shopee":
-            return f"{prefix}🛒 ช้อปด่วน {product_name} ลดราคาพิเศษ การันตีของแท้ กดใส่ตะกร้าเลย! #ShopeeTH"
-        else:
-            return f"{prefix}✨ รีวิว {product_name} ใช้แล้วชอบมาก สั่งซื้อ/สอบถามทักแชตได้เลยค่ะ #FacebookReels"
-
 
 # --- ส่วนทดสอบการทำงานของโค้ด (Test Execution) ---
 if __name__ == "__main__":
-    # ทดสอบเรียกใช้ด้วย ChatGPT Engine
-    engine = AutoGenXEngine(ai_provider="chatgpt")
+    # ทดสอบเรียกใช้ในระบบ Local (สายฟรี 100%)
+    app = AutoGenXCoreEngine(ai_provider="free_local")
     
-    # จำลองการส่งข้อมูล
-    output = engine.process_product_content(
+    result = app.generate_full_package(
         product_name="ทิชชู่ห่อหนาพิเศษ (ดึงจากข้างล่างห่อ)",
-        image_path="sample_tissue.jpg",
-        target_platforms=["TikTok", "Shopee", "Facebook"]
+        target_platforms=["TikTok", "Shopee", "Facebook", "Instagram", "YouTube"]
     )
     
-    print("\n=== ผลลัพธ์ที่ได้จากระบบ ===")
-    print(json.dumps(output, indent=4, ensure_ascii=False))
+    print("\n=== ผลลัพธ์แพ็กเกจคอนเทนต์ AutoGenX PRO ===")
+    print(json.dumps(result, indent=4, ensure_ascii=False))
